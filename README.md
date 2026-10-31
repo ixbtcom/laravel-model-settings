@@ -25,8 +25,28 @@
 <a title="PHP Version" href="#"><img src="https://img.shields.io/packagist/php-v/glorand/laravel-model-settings" alt="PHP Version" /></a>
 </p>
 
-The package requires PHP 8.1+ and follows the FIG standards PSR-1, PSR-2, PSR-4 and PSR-12
-to ensure a high level of interoperability between shared PHP.
+Эта ветка использует Laravel 13, которому требуется PHP 8.3 или новее.
+CI проверяет PHP 8.4 и 8.5 с Testbench 11 и PHPUnit 12 в двух вариантах разрешения
+зависимостей: `prefer-lowest` и `prefer-stable`. Старые Laravel 10–12 в CI не подставляются.
+
+Laravel Framework остаётся зависимостью пакета. Testbench и Tinker нужны для разработки
+и находятся в `require-dev`; пакет не подтягивает их как production-зависимости.
+
+## Проверка пакета
+
+```shell
+composer validate --strict
+composer update --prefer-stable --prefer-dist
+composer audit --locked --format=json
+vendor/bin/phpunit
+```
+
+В CI используется Composer 2.11.1 с включённой блокировкой уязвимых зависимостей;
+отдельный `composer audit` обязан завершиться успешно. JSON аудита и JUnit-отчёт
+сохраняются как артефакты. Для проверки нижней границы зависимостей используется
+`composer update --prefer-lowest --prefer-dist` с теми же проверками безопасности.
+Все тесты консольных команд выполняются на PHP 8.4/8.5; фиктивных успешных
+результатов вместо проверок и обхода assertions нет.
 
 Bug reports, feature requests, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md).
 

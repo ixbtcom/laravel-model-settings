@@ -2,11 +2,12 @@
 
 namespace Glorand\Model\Settings\Tests;
 
+use Glorand\Model\Settings\Tests\Models\UserWithRedis;
 use Glorand\Model\Settings\Tests\Models\UserWithRedis as User;
 
 final class RedisSettingsManagerTest extends TestCase
 {
-    /** @var \Glorand\Model\Settings\Tests\Models\UserWithRedis */
+    /** @var UserWithRedis */
     protected $model;
 
     protected function setUp(): void
@@ -15,8 +16,14 @@ final class RedisSettingsManagerTest extends TestCase
         $this->model = User::first();
     }
 
-    public function testMarker(): void
+    public function test_settings_persist_across_model_instances(): void
     {
-        $this->assertTrue(true);
+        $settings = ['user' => ['name' => 'Redis user']];
+
+        $this->model->settings()->apply($settings);
+
+        $this->assertSame($settings, $this->model->fresh()->settings()->all());
+        $this->model->settings()->clear();
+        $this->assertSame([], $this->model->fresh()->settings()->all());
     }
 }
