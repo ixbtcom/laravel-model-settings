@@ -12,7 +12,7 @@ default:
   tags: [docker]
 
 check:
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine:3.20
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine:3.24
   timeout: 5m
   variables:
     GIT_DEPTH: "0"
@@ -51,7 +51,7 @@ check:
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/chialab/php:${W3_PHP_VERSION}
   timeout: 20m
   variables:
-    W3_PHP_VERSION: "8.4"
+    W3_PHP_VERSION: "8.5"
     COMPOSER_ALLOW_SUPERUSER: "1"
     COMPOSER_NO_INTERACTION: "1"
     COMPOSER_NO_AUDIT: "0"
@@ -72,8 +72,8 @@ tests:
   extends: .php
   parallel:
     matrix:
-      - W3_PHP_VERSION: ["8.4", "8.5"]
-        W3_DEPENDENCY_PREFERENCE: [prefer-lowest, prefer-stable]
+      - W3_PHP_VERSION: ["8.5"]
+        W3_DEPENDENCY_PREFERENCE: [prefer-stable]
   script:
     - |
       php -r 'foreach (["mbstring", "intl", "pdo", "pdo_sqlite", "sqlite3"] as $extension) { if (!extension_loaded($extension)) { fwrite(STDERR, "Missing PHP extension: ".$extension."\n"); exit(1); } }'
