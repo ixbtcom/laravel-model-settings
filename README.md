@@ -26,8 +26,8 @@
 </p>
 
 Эта ветка использует Laravel 13, которому требуется PHP 8.3 или новее.
-CI проверяет PHP 8.4 и 8.5 с Testbench 11 и PHPUnit 12 в двух вариантах разрешения
-зависимостей: `prefer-lowest` и `prefer-stable`. Старые Laravel 10–12 в CI не подставляются.
+Канонический GitLab CI (`.gitlab-ci.yml`) проверяет PHP 8.5 с Testbench 11 и PHPUnit 12
+с разрешением зависимостей `prefer-stable`. Старые Laravel 10–12 в CI не подставляются.
 
 Laravel Framework остаётся зависимостью пакета. Testbench и Tinker нужны для разработки
 и находятся в `require-dev`; пакет не подтягивает их как production-зависимости.
@@ -43,9 +43,9 @@ vendor/bin/phpunit
 
 В CI используется Composer 2.11.1 с включённой блокировкой уязвимых зависимостей;
 отдельный `composer audit` обязан завершиться успешно. JSON аудита и JUnit-отчёт
-сохраняются как артефакты. Для проверки нижней границы зависимостей используется
+сохраняются как артефакты. Для ручной локальной проверки нижней границы зависимостей можно выполнить
 `composer update --prefer-lowest --prefer-dist` с теми же проверками безопасности.
-Все тесты консольных команд выполняются на PHP 8.4/8.5; фиктивных успешных
+Все тесты консольных команд в GitLab CI выполняются на PHP 8.5; фиктивных успешных
 результатов вместо проверок и обхода assertions нет.
 
 Bug reports, feature requests, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md).
@@ -73,6 +73,16 @@ Bug reports, feature requests, and pull requests can be submitted by following o
 - [License](#license)
 
 ## Installation <a name="installation"></a>
+
+This fork is maintained in [GitLab](https://glab.ixbt.site/packages/laravel-model-settings) on branch `master`.
+To select it instead of the upstream package, configure this VCS repository in the consuming
+application (GitLab access is required); the Composer package name remains `glorand/laravel-model-settings`:
+
+```bash
+composer config repositories.laravel-model-settings vcs https://glab.ixbt.site/packages/laravel-model-settings.git
+composer require glorand/laravel-model-settings:dev-master
+```
+
 ```shell
 $ composer require glorand/laravel-model-settings
 ```
